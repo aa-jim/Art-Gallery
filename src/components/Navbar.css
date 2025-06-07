@@ -1,58 +1,58 @@
-.navbar {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  padding: .8rem 2rem;
-  background-color: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(5px);
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 3px solid red;
+.navbar-container {
+position: fixed;
+top: 0;
+width: 100%;
+padding: .8rem 2rem;
+background-color: rgba(0, 0, 0, 0.7);
+backdrop-filter: blur(5px);
+z-index: 100;
+display: flex;
+justify-content: space-between;
+align-items: center;
+border-bottom: 3px solid red;
+  flex-wrap: wrap;
 }
 
 .logo {
-  font-family: 'Impact', sans-serif;
-  font-size: 1.8rem;
-  color: white;
-  letter-spacing: 1px;
-  transform: rotate(-2deg);
-  background-color: red;
-  padding: 0.3rem 1rem;
-  box-shadow: 0 0 10px black;
+font-family: 'Impact', sans-serif;
+font-size: 1.8rem;
+color: white;
+letter-spacing: 1px;
+transform: rotate(-2deg);
+background-color: red;
+padding: 0.3rem 1rem;
+box-shadow: 0 0 10px black;
 }
 
 .nav-links {
-  list-style: none;
   display: flex;
-  gap: 2rem;
+  gap: 1.5rem;
 }
 
 .nav-links li {
-  position: relative;
+  list-style: none;
 }
 
 .nav-links a {
-  color: white;
-  font-weight: bolder;
-  font-size: 1.5rem;
-  text-decoration: none;
-  padding: 5px 10px;
-  position: relative;
-  transition: color 0.3s ease;
+color: white;
+font-weight: bolder;
+font-size: 1.5rem;
+text-decoration: none;
+padding: 5px 10px;
+position: relative;
+transition: color 0.3s ease;
 }
 
 .nav-links a::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  transform: translateX(-50%);
-  width: 0%;
-  height: 2px;
-  background: white;
-  transition: width 0.3s ease;
+content: '';
+position: absolute;
+left: 50%;
+bottom: 0;
+transform: translateX(-50%);
+width: 0%;
+height: 2px;
+background: white;
+transition: width 0.3s ease;
 }
 
 .nav-links a:hover::after {
@@ -60,39 +60,29 @@
 }
 
 .nav-links a:hover {
-  color: red;
+color: red;
 }
 
 @media (max-width: 768px) {
-  .nav-links {
-    gap: 1rem;
-  }
-
-  .nav-links a {
-    font-size: 1.2rem;
-  }
-
-  .logo {
-    font-size: 1.5rem;
-    padding: 0.2rem 0.8rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-links {
-    flex-direction: column;
-    gap: 0.5rem;
-    align-items: flex-start;
-  }
-
-  .navbar {
+  .navbar-container {
     flex-direction: column;
     align-items: flex-start;
   }
+.logo {
+font-family: 'Impact', sans-serif;
+font-size: 1.8rem;
+color: white;
+letter-spacing: 1px;
+transform: rotate(-2deg);
+background-color: red;
+padding: 0.3rem 1rem;
+box-shadow: 0 0 10px black;
 }
 
+}
 .hamburger {
   display: none;
+  font-weight: bolder;
   font-size: 2rem;
   color: white;
   cursor: pointer;
