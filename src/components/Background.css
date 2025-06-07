@@ -10,6 +10,12 @@
   overflow: hidden;
   pointer-events: none;
 }
+@media (max-width: 768px) {
+  background {
+    background-size: cover;
+    background-position: center;
+  }
+}
 .background-2 {
   position: absolute;
   width: 100vw;
@@ -21,3 +27,8 @@
   z-index: 0;
   pointer-events: none;
 }
+@media (max-width: 768px) {
+  background-2 {
+    background-size: cover;
+    background-position: center;
+  }
