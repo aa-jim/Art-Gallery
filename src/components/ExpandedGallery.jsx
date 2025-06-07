@@ -115,8 +115,10 @@ const ExpandedGallery = ({ images, year, onClose }) => {
             style={{
               minWidth: "260px",
               maxHeight: "360px",
-              objectFit: "cover",
               flexShrink: 0,
+              objectFit: "contain",
+               width: "auto",
+                height: "auto"
             }}
           />
         ))}
