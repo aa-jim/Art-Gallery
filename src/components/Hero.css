@@ -1,0 +1,64 @@
+.hero-container {
+  padding: 4rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  padding: 2rem 1rem 3rem;
+  margin: 0;
+  z-index: 1;
+}
+
+.hero-title {
+  font-size: 3.85rem;
+  color: white;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.red-text {
+  color: #ff003c;
+}
+
+.hero-subtext {
+  margin-top: .5rem;
+  font-size: 1.3rem;
+  color: #e5e5e5;
+  text-shadow: 1px 1px 0 black;
+}
+
+.hero-button {
+  background: red;
+  color: white;
+  font-weight: bold;
+  padding: 12px 30px;
+  cursor: pointer;
+  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+  transition: background-color 1s, color 1s;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2.5rem;
+  }
+
+  .hero-subtext {
+    font-size: 1.1rem;
+  }
+
+  .wavy-button {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: 2rem;
+  }
+
+  .hero-subtext {
+    font-size: 1rem;
+  }
+}

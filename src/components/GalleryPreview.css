@@ -1,0 +1,30 @@
+.edge-blur {
+  position: absolute;
+  top: 80px;
+  width: 60px;
+  height: 245px;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.red-left {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 0, 0, 0.6), transparent);
+}
+
+.red-right {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 0, 0, 0.6), transparent);
+}
+
+@media (max-width: 768px) {
+  .h-60 {
+    height: 180px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .h-60 {
+    height: 120px !important;
+  }
+}
