@@ -13,17 +13,6 @@ border-bottom: 3px solid red;
   flex-wrap: wrap;
 }
 
-.logo {
-font-family: 'Impact', sans-serif;
-font-size: 1.8rem;
-color: white;
-letter-spacing: 1px;
-transform: rotate(-2deg);
-background-color: red;
-padding: 0.3rem 1rem;
-box-shadow: 0 0 10px black;
-}
-
 .nav-links {
   display: flex;
   gap: 1.5rem;
@@ -77,6 +66,7 @@ transform: rotate(-2deg);
 background-color: red;
 padding: 0.3rem 1rem;
 box-shadow: 0 0 10px black;
+  white-space: nowrap;
 }
 
 }
