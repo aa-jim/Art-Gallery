@@ -1,34 +1,29 @@
 .background {
   position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background: black;
   background-image: url('/public/assets/path_line.png');
-  background-size: 25%;
+  background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
 }
-@media (max-width: 768px) {
-  background {
-    background-size: cover;
-    background-position: center;
-  }
-}
+
 .background-2 {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   background-image: url('/public/assets/path_line90.png');
   background-repeat: no-repeat;
-  background-position: 1232px 200px; 
-  background-size: auto;
+  background-size: cover;
+  background-position: center;
   z-index: 0;
   pointer-events: none;
 }
-@media (max-width: 768px) {
-  background-2 {
-    background-size: cover;
-    background-position: center;
-  }
