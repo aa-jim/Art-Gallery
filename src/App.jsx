@@ -6,7 +6,6 @@ import AboutMe from "./components/AboutMe";
 import FloatingStar from "./components/FloatingStar";
 import Background from "./components/Background";
 import GallerySection from "./components/GallerySection";
-import './responsive.css';
 import "./App.css";
 
 function App() {
