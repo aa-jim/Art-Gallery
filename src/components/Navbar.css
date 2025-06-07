@@ -52,22 +52,23 @@ transition: width 0.3s ease;
 color: red;
 }
 
+.logo {
+  font-family: 'Impact', sans-serif;
+  font-size: 1.8rem;
+  color: white;
+  letter-spacing: 1px;
+  transform: rotate(-2deg);
+  background-color: red;
+  padding: 0.3rem 1rem;
+  box-shadow: 0 0 10px black;
+  white-space: nowrap;
+}
+
 @media (max-width: 768px) {
   .navbar-container {
     flex-direction: column;
     align-items: flex-start;
   }
-.logo {
-font-family: 'Impact', sans-serif;
-font-size: 1.8rem;
-color: white;
-letter-spacing: 1px;
-transform: rotate(-2deg);
-background-color: red;
-padding: 0.3rem 1rem;
-box-shadow: 0 0 10px black;
-  white-space: nowrap;
-}
 
 }
 .hamburger {
@@ -101,4 +102,12 @@ box-shadow: 0 0 10px black;
     padding: 0.5rem 1rem;
     font-size: 1.3rem;
   }
+}
+
+.hamburger {
+  display: none;
+  font-weight: bolder;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
 }
