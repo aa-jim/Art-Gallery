@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/Art-Gallery/static/css/main.c3cff3dc.css",
-    "main.js": "/Art-Gallery/static/js/main.2047ad45.js",
+    "main.css": "/Art-Gallery/static/css/main.33c268ec.css",
+    "main.js": "/Art-Gallery/static/js/main.7c376ed1.js",
     "static/js/453.7d537966.chunk.js": "/Art-Gallery/static/js/453.7d537966.chunk.js",
     "static/media/1358482.png": "/Art-Gallery/static/media/1358482.4bfd7be710f01f9c2796.png",
     "static/media/art6.webp": "/Art-Gallery/static/media/art6.63349aac2ec86aa3a634.webp",
@@ -17,12 +17,12 @@
     "static/media/path_line90.png": "/Art-Gallery/static/media/path_line90.5a6d6d3478d8b9993791.png",
     "static/media/art2.webp": "/Art-Gallery/static/media/art2.3b7c112e84042328a1fd.webp",
     "index.html": "/Art-Gallery/index.html",
-    "main.c3cff3dc.css.map": "/Art-Gallery/static/css/main.c3cff3dc.css.map",
-    "main.2047ad45.js.map": "/Art-Gallery/static/js/main.2047ad45.js.map",
+    "main.33c268ec.css.map": "/Art-Gallery/static/css/main.33c268ec.css.map",
+    "main.7c376ed1.js.map": "/Art-Gallery/static/js/main.7c376ed1.js.map",
     "453.7d537966.chunk.js.map": "/Art-Gallery/static/js/453.7d537966.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c3cff3dc.css",
-    "static/js/main.2047ad45.js"
+    "static/css/main.33c268ec.css",
+    "static/js/main.7c376ed1.js"
   ]
 }
