@@ -1,17 +1,23 @@
 import React from "react";
 import "./Background.css";
-import FloatingStar from "./FloatingStar";
+
+const BASE = process.env.PUBLIC_URL + "/assets/";
 
 export default function Background() {
   return (
-    <div className="background">
-      <div className="background-2"></div>
-      <FloatingStar color="red" top="15%" left="20%" size={100} delay={0} />
-      <FloatingStar color="white" top="25%" left="60%" size={80} delay={1} />
-      <FloatingStar color="red" top="70%" left="80%" size={80} delay={2} />
-      <FloatingStar color="white" top="63%" left="85%" size={80} delay={1} />
-      <FloatingStar color="red" top="75%" left="87%" size={80} delay={2} />
-<div className="path_line"></div>
-    </div>
+    <>
+      <div className="bg-fixed-left" style={{ backgroundImage: `url(${BASE}path_line.png)` }} />
+      <div className="bg-scroll-right">
+        <img src={`${BASE}path_line90.png`} alt="" className="bg-scroll-right-img" />
+      </div>
+      <div className="stars-container">
+        <div className="star star-1" style={{ backgroundImage: `url(${BASE}white_star.png)` }} />
+        <div className="star star-2" style={{ backgroundImage: `url(${BASE}red_star.png)` }} />
+        <div className="star star-3" style={{ backgroundImage: `url(${BASE}red_star.png)` }} />
+        <div className="star star-4" style={{ backgroundImage: `url(${BASE}white_star.png)` }} />
+        <div className="star star-5" style={{ backgroundImage: `url(${BASE}red_star.png)` }} />
+        <div className="star star-6" style={{ backgroundImage: `url(${BASE}white_star.png)` }} />
+      </div>
+    </>
   );
 }

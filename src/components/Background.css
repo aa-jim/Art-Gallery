@@ -1,29 +1,102 @@
-.background {
+/* LEFT SIDE — fixed to viewport, never moves */
+.bg-fixed-left {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: black;
-  background-image: url('/public/assets/path_line.png');
-  background-size: cover;
+  width: 100%;
+  height: 100%;
+  /* background-image handled by inline style in Background.jsx via process.env.PUBLIC_URL */
+  background-size: contain;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: top left;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: screen;
+}
+
+/* RIGHT SIDE — scrolls with the page and disappears on scroll */
+.bg-scroll-right {
+  position: absolute;
+  top: 11.5rem;
+  right: 0; /* anchor to right edge instead of negative value */
+  pointer-events: none;
   z-index: 0;
   overflow: hidden;
+}
+
+.bg-scroll-right-img {
+  width: 580px;
+  height: auto;
+  mix-blend-mode: screen;
+  display: block;
+  transform: translateX(
+    52%
+  ); /* push it off screen to the right — adjust % to taste */
+}
+
+.navbar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 69px; /* match your navbar height — tweak if needed */
+  background-color: #000000;
+  z-index: 11; /* just below navbar's z-index: 100 */
   pointer-events: none;
 }
 
-.background-2 {
-  position: absolute;
+/* Stars — positioned relative to .bg-scroll-right */
+.stars-container {
+  position: fixed;
   top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url('/public/assets/path_line90.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  z-index: 0;
+  right: 0;
+  width: 0; /* zero width — stars overflow via right/top values */
+  height: 0;
   pointer-events: none;
+  z-index: 0;
+}
+
+.star {
+  position: absolute;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  mix-blend-mode: screen;
+}
+
+.star-1 {
+  width: 42px;
+  height: 42px;
+  top: 310px;
+  right: 240px;
+}
+.star-2 {
+  width: 38px;
+  height: 38px;
+  top: 270px;
+  right: 150px;
+}
+.star-3 {
+  width: 80px;
+  height: 80px;
+  top: 550px;
+  right: 100px;
+}
+.star-4 {
+  width: 80px;
+  height: 80px;
+  top: 450px;
+  right: 140px;
+}
+.star-5 {
+  width: 80px;
+  height: 80px;
+  top: 520px;
+  right: 220px;
+}
+.star-6 {
+  width: 24px;
+  height: 24px;
+  top: 180px;
+  right: 220px;
 }

@@ -1,88 +1,199 @@
 .gallery-container {
-  padding: 6rem 2rem;
+  padding: 12rem 2rem;
   text-align: center;
 }
 
 .gallery-title {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 4rem;
+}
+
+.gallery-title::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #fd0000;
+  transform: skewX(-12deg) rotate(-5deg);
+  z-index: 0;
+}
+
+.gallery-title-box {
+  position: relative;
+  z-index: 1;
+  background-color: #000;
+  border: 4px solid white;
+  transform: skewX(-12deg);
+  padding: 0.4rem 2.5rem;
+}
+
+.gallery-title-box span {
+  display: inline-block;
+  transform: skewX(12deg);
+  color: white;
+  font-family: "Anton", "Impact", sans-serif;
   font-size: 3rem;
-  color: #fd0000;
-  font-weight: 900;
   letter-spacing: 2px;
-  text-align: center;
-  margin-bottom: 2rem;
+}
+
+/* ── Gallery content area ── */
+.gallery-content {
   position: relative;
 }
 
-.gallery-underline {
-  display: block;
-  height: 2px;
-  background-color: #b30000;
-  width: 25%;
-  margin: 0.5rem auto 0;
-  z-index: 20;
-}
-
-.thumbnail-box {
+/* ── Thumbnail Wrapper ── */
+.thumbnail-wrapper {
   position: relative;
   width: 250px;
   height: 250px;
-  border: 4px solid #fd0000;
-  overflow: hidden;
-  transition: transform 0.3s ease;
   cursor: pointer;
-  background-color: black;
-  z-index: 5;
 }
 
-.thumbnail-box:hover {
-  transform: scale(1.05);
+.frame-white {
+  position: absolute;
+  inset: 0;
+  background-color: black;
+  border: 7px solid white;
+  transform: rotate(-6deg);
+  z-index: 1;
+  transition: transform 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.frame-red {
+  position: absolute;
+  inset: 0;
+  background-color: #fd0000;
+  border: 7px solid #fd0000;
+  transform: rotate(3deg);
+  z-index: 2;
+  transition: transform 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.thumbnail-image-box {
+  position: absolute;
+  transform: rotate(3deg);
+  inset: 8px;
+  z-index: 3;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  border: 7px solid #000;
+  background-color: black;
 }
 
 .thumbnail-image {
   width: 100%;
   height: 100%;
+  transform: rotate(-3deg);
   object-fit: cover;
   display: block;
-  z-index: 6;
 }
 
+/* Stars */
+.thumb-star {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.thumb-star-tl {
+  width: 70px;
+  height: 70px;
+  top: -30px;
+  left: -18px;
+  transform: rotate(20deg);
+}
+
+.thumb-star-br {
+  width: 54px;
+  height: 54px;
+  bottom: -15px;
+  right: -15px;
+  transform: rotate(-20deg);
+}
+
+/* Year tag */
 .year-bubble {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background-color: black;
-  border: 3px solid white;
+  bottom: 16px;
+  left: 20px;
+  z-index: 6;
+  background-color: #fd0000;
   color: white;
-  padding: 6px 12px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Anton", "Montserrat", sans-serif;
   font-size: 1rem;
+  padding: 3px 14px;
   transform: skewX(-10deg);
-  box-shadow: 3px 3px 0 white;
-  display: none;
-  z-index: 7;
+  border: 4px solid black;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
 }
 
-.thumbnail-box:hover .year-bubble {
-  display: block;
+.year-bubble span {
+  display: inline-block;
+  transform: skewX(10deg);
 }
 
+/* ── Hover ── */
+.thumbnail-wrapper:hover .frame-white {
+  transform: rotate(-8deg);
+}
+.thumbnail-wrapper:hover .frame-red {
+  transform: rotate(5deg);
+}
+.thumbnail-wrapper:hover .thumbnail-image-box {
+  transform: rotate(5deg);
+}
+.thumbnail-wrapper:hover .thumb-star-tl {
+  transform: rotate(-5deg);
+}
+.thumbnail-wrapper:hover .thumb-star-br {
+  transform: rotate(5deg);
+}
+.thumbnail-wrapper:hover .year-bubble {
+  opacity: 1;
+}
+
+/* ── Expanded wrapper — overlays the grid ── */
+.expanded-inline-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 2rem 0;
+  overflow: visible;
+}
+
+/* Click outside backdrop */
+.expanded-click-outside {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  cursor: pointer;
+}
+
+/* Keep grid visible underneath but faded */
+.thumbnails-hidden .thumbnail-wrapper {
+  pointer-events: none;
+}
+
+/* ── Responsive ── */
 @media (max-width: 1024px) {
   .thumbnail-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
 @media (max-width: 640px) {
   .thumbnail-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr !important;
   }
-
-  .thumbnail-box {
+  .thumbnail-wrapper {
     width: 200px;
     height: 200px;
-  }
-
-  .year-bubble {
-    font-size: 0.9rem;
   }
 }

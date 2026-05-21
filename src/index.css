@@ -1,16 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 html {
   scroll-behavior: smooth;
 }
 
-
-@keyframes scrollPreview {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
+body {
+  background-color: #0a0a0a;
 }
 
-.animate-scrollPreview {
-  animation: scrollPreview 40s linear infinite;
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 15s linear infinite;
 }
