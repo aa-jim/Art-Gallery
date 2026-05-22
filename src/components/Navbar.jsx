@@ -19,15 +19,39 @@ export default function Navbar() {
 
   const close = () => setIsOpen(false);
 
-  const scrollTo = (id) => {
-    close();
-    if (!id) { window.scrollTo({ top: 0, behavior: "smooth" }); return; }
-    const el = document.getElementById(id);
-    if (el) {
-      const offset = el.offsetTop + 80;
-      window.scrollTo({ top: offset, behavior: "smooth" });
-    }
+  const smoothScrollTo = (top, duration = 800) => {
+  const start = window.scrollY;
+  const distance = top - start;
+  let startTime = null;
+
+  const ease = (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+  const step = (timestamp) => {
+    if (!startTime) startTime = timestamp;
+    const progress = Math.min((timestamp - startTime) / duration, 1);
+    window.scrollTo(0, start + distance * ease(progress));
+    if (progress < 1) requestAnimationFrame(step);
   };
+
+  requestAnimationFrame(step);
+};
+
+const scrollTo = (id) => {
+  close();
+  const isSmallMobile = window.innerWidth <= 480;
+  const isMobile = window.innerWidth <= 768;
+  const duration = isSmallMobile ? 10 : 800;
+  if (!id) { smoothScrollTo(0, duration); return; }
+  const el = document.getElementById(id);
+  if (el) {
+    if (id === "gallery" && isMobile) {
+      const offset = el.getBoundingClientRect().top + window.scrollY - 80;
+      window.scrollTo({ top: offset, behavior: "smooth" });
+    } else {
+      smoothScrollTo(el.offsetTop + 80, duration);
+    }
+  }
+};
 
   return (
     <>

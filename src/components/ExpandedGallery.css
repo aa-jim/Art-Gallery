@@ -97,10 +97,10 @@
 
 .back-button span {
   display: inline-block;
-  transform: skewX(8deg);
+  transform: skewX(8deg) translateY(-0.15em);
   font-size: 4rem;
   font-weight: 900;
-  margin-top: -1rem;
+  line-height: 1;
 }
 
 .back-button:hover {
@@ -153,7 +153,7 @@
 /* ── Responsive ── */
 @media (max-width: 768px) {
   .expanded-gallery-wrapper {
-    width: 90vw;
+    width: 85vw;
     height: 60vh;
     margin: 0 auto;
   }
@@ -165,8 +165,8 @@
 
 @media (max-width: 480px) {
   .expanded-gallery-wrapper {
-    height: 70vh;
-    margin: 0 auto;
+    height: 65vh;
+    margin: 2rem auto;
   }
   .year-badge {
     font-size: 1.5rem;
@@ -179,6 +179,6 @@
     font-size: 1.3rem;
   }
   .back-button span {
-    margin: -0.5rem 0.25rem 0 0;
+    transform: skewX(8deg) translateY(-0.08em); /* less offset on mobile */
   }
 }

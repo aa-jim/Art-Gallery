@@ -34,17 +34,6 @@
   ); /* push it off screen to the right — adjust % to taste */
 }
 
-.navbar-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 69px; /* match your navbar height — tweak if needed */
-  background-color: #000000;
-  z-index: 11; /* just below navbar's z-index: 100 */
-  pointer-events: none;
-}
-
 /* Stars — positioned relative to .bg-scroll-right */
 .stars-container {
   position: fixed;
