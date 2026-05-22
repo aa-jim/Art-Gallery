@@ -6,27 +6,30 @@ import "./AboutMe.css";
 const AboutMe = () => {
   const isMobile = window.innerWidth <= 768;
   const controls = useAnimation();
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0,
+    rootMargin: isMobile ? "-25% 0px" : "-35% 0px",
+  });
 
   React.useEffect(() => {
-    if (inView) controls.start({ opacity: 1, y: 0, x: 0 });
+    if (inView) controls.start({ opacity: 1, y: 0, x: 0, scale: 1, skewY: 0 });
   }, [inView, controls]);
 
   return (
-    <motion.section
-      id="about"
-      className="about-section"
-      ref={ref}
-      initial={isMobile ? false : { opacity: 0, y: 50 }}
-      animate={isMobile ? undefined : controls}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-    >
+    <section id="about" className="about-section" ref={ref}>
+
       {/* ── Desktop title ── */}
-      <h2 className="about-title">
+      <motion.h2
+        className="about-title"
+        initial={{ opacity: 0, y: 40 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <div className="about-title-box">
           <span>ABOUT ME</span>
         </div>
-      </h2>
+      </motion.h2>
 
       {/* ── Mobile title — snaps in from left ── */}
       <motion.div
@@ -46,9 +49,15 @@ const AboutMe = () => {
 
         {/* Image */}
         <motion.div
-          initial={isMobile ? false : { opacity: 0, y: 40 }}
-          animate={isMobile ? undefined : controls}
-          transition={{ type: "spring", stiffness: 400, damping: 28, delay: 0.15 }}
+          initial={{ opacity: 0, y: 60, scale: 0.82, skewY: 3 }}
+          animate={controls}
+          transition={{
+            type: "spring",
+            stiffness: 380,
+            damping: 22,
+            mass: 0.8,
+            delay: 0.15,
+          }}
         >
           <div className="about-image-container">
             <a href="https://www.facebook.com/aa.jim.3" target="_blank" rel="noopener noreferrer">
@@ -63,9 +72,15 @@ const AboutMe = () => {
 
         {/* Text box */}
         <motion.div
-          initial={isMobile ? false : { opacity: 0, y: 40 }}
-          animate={isMobile ? undefined : controls}
-          transition={{ type: "spring", stiffness: 400, damping: 28, delay: 0.3 }}
+          initial={{ opacity: 0, y: 60, scale: 0.82, skewY: 3 }}
+          animate={controls}
+          transition={{
+            type: "spring",
+            stiffness: 380,
+            damping: 22,
+            mass: 0.8,
+            delay: 0.3,
+          }}
         >
           <div className="about-text-box">
             <p>
@@ -80,7 +95,7 @@ const AboutMe = () => {
         </motion.div>
 
       </div>
-    </motion.section>
+    </section>
   );
 };
 

@@ -163,13 +163,43 @@ const galleryYears = [
 ];
 
 /* ─────────────────────────────────────────
+   Shared card inner content
+───────────────────────────────────────── */
+const CardInner = ({ image, year }) => (
+  <>
+    <div className="mobile-frame-white" />
+    <div className="mobile-frame-red" />
+    <div className="mobile-image-box">
+      <img src={image} alt={year} className="mobile-card-img" />
+    </div>
+    <div className="mobile-thumb-star mobile-star-tl"><StarIcon /></div>
+    <div className="mobile-thumb-star mobile-star-br"><StarIcon /></div>
+    <div className="mobile-year-bubble"><span>{year}</span></div>
+  </>
+);
+
+/* ─────────────────────────────────────────
    MOBILE GALLERY — horizontal swipe carousel
 ───────────────────────────────────────── */
 const MobileGallery = ({ onOpenYear }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [hasPopped, setHasPopped] = useState(false);
   const dragStartX = useRef(0);
-  const SIDE_OFFSET = 200; // how much the side cards peek out
+
+  const [carouselRef, carouselInView] = useInView({
+    triggerOnce: true,
+    threshold: 0,
+    rootMargin: "-25% 0px",
+  });
+
+  // After spring settles, hand control to carousel spring
+  useEffect(() => {
+    if (carouselInView && !hasPopped) {
+      const t = setTimeout(() => setHasPopped(true), 700);
+      return () => clearTimeout(t);
+    }
+  }, [carouselInView, hasPopped]);
 
   const goTo = (index) => {
     const clamped = Math.max(0, Math.min(index, galleryYears.length - 1));
@@ -200,7 +230,7 @@ const MobileGallery = ({ onOpenYear }) => {
   };
 
   return (
-    <div className="mobile-gallery-carousel">
+    <div className="mobile-gallery-carousel" ref={carouselRef} style={{ minHeight: "320px" }}>
       <div
         className="mobile-carousel-track"
         onTouchStart={handleDragStart}
@@ -212,28 +242,48 @@ const MobileGallery = ({ onOpenYear }) => {
           const offset = index - activeIndex;
           const isCenter = offset === 0;
           const isVisible = Math.abs(offset) <= 1;
-          const translateX = offset * SIDE_OFFSET;
-          const scale = isCenter ? 1 : 0.72;
-          const opacity = isCenter ? 1 : 0.45;
+          const translateX = offset * 200;
+          const carouselScale = isCenter ? 1 : 0.72;
+          const carouselOpacity = isCenter ? 1 : 0.45;
           const zIndex = isCenter ? 5 : 3 - Math.abs(offset);
 
+          if (hasPopped) {
+            // Pop done — pure carousel spring, no entrance interference
+            return (
+              <motion.div
+                key={year}
+                className="mobile-card-wrapper"
+                animate={{ x: translateX, scale: carouselScale, opacity: isVisible ? carouselOpacity : 0, zIndex }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                onClick={() => handleCardClick(index)}
+                style={{ pointerEvents: isVisible ? "auto" : "none" }}
+              >
+                <CardInner image={image} year={year} />
+              </motion.div>
+            );
+          }
+
+          // Entrance pop — each card targets its OWN correct opacity/scale
+          // so side cards never flash as highlighted during pop
           return (
             <motion.div
               key={year}
               className="mobile-card-wrapper"
-              animate={{ x: translateX, scale, opacity: isVisible ? opacity : 0, zIndex }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              initial={{ opacity: 0, y: 60, scale: 0.82, skewY: 3, x: translateX, zIndex }}
+              animate={carouselInView
+                ? { opacity: isVisible ? carouselOpacity : 0, y: 0, scale: carouselScale, skewY: 0, x: translateX, zIndex }
+                : { opacity: 0, y: 60, scale: 0.82, skewY: 3, x: translateX, zIndex }
+              }
+              transition={{
+                type: "spring",
+                stiffness: 320,
+                damping: 28,
+                mass: 0.6,
+              }}
               onClick={() => handleCardClick(index)}
-              style={{ pointerEvents: isVisible ? "auto" : "none" }}
+              style={{ pointerEvents: isVisible && carouselInView ? "auto" : "none" }}
             >
-              <div className="mobile-frame-white" />
-              <div className="mobile-frame-red" />
-              <div className="mobile-image-box">
-                <img src={image} alt={year} className="mobile-card-img" />
-              </div>
-              <div className="mobile-thumb-star mobile-star-tl"><StarIcon /></div>
-              <div className="mobile-thumb-star mobile-star-br"><StarIcon /></div>
-              <div className="mobile-year-bubble"><span>{year}</span></div>
+              <CardInner image={image} year={year} />
             </motion.div>
           );
         })}
@@ -254,23 +304,68 @@ const MobileGallery = ({ onOpenYear }) => {
 };
 
 /* ─────────────────────────────────────────
+   DESKTOP THUMBNAIL — pop animation on reveal
+───────────────────────────────────────── */
+const DesktopThumbnail = ({ year, image, index, selectedYear, onSelect, inView }) => {
+  return (
+    <motion.div
+      layoutId={`card-${year}`}
+      className="thumbnail-wrapper"
+      onClick={() => !selectedYear && onSelect(year)}
+      initial={{ opacity: 0, y: 60, scale: 0.82, skewY: 3 }}
+      animate={inView
+        ? {
+            opacity: selectedYear && selectedYear !== year ? 0 : 1,
+            y: 0,
+            scale: 1,
+            skewY: 0,
+            pointerEvents: selectedYear ? "none" : "auto",
+          }
+        : { opacity: 0, y: 60, scale: 0.82, skewY: 3 }
+      }
+      transition={inView
+        ? {
+            delay: index * 0.1,
+            type: "spring",
+            stiffness: 380,
+            damping: 22,
+            mass: 0.8,
+          }
+        : { duration: 0 }
+      }
+    >
+      <div className="frame-white" />
+      <div className="frame-red" />
+      <div className="thumbnail-image-box">
+        <img src={image} alt={year} className="thumbnail-image" />
+      </div>
+      <div className="thumb-star thumb-star-tl"><StarIcon /></div>
+      <div className="thumb-star thumb-star-br"><StarIcon /></div>
+      <div className="year-bubble"><span>{year}</span></div>
+    </motion.div>
+  );
+};
+
+/* ─────────────────────────────────────────
    MAIN GALLERY SECTION
 ───────────────────────────────────────── */
 const GallerySection = () => {
   const isMobile = window.innerWidth <= 768;
-  const controls = useAnimation();
   const titleControls = useAnimation();
-  const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
+  const [ref, inView] = useInView({
+    triggerOnce: true,
+    threshold: 0,
+    rootMargin: isMobile ? "-25% 0px" : "-35% 0px",
+  });
   const [selectedYear, setSelectedYear] = useState(null);
   const expandedRef = useRef(null);
   const mobileExpandedRef = useRef(null);
 
   useEffect(() => {
     if (inView) {
-      controls.start({ opacity: 1, y: 0 });
       titleControls.start({ opacity: 1, x: 0 });
     }
-  }, [inView, controls, titleControls]);
+  }, [inView, titleControls]);
 
   useEffect(() => {
     if (selectedYear && expandedRef.current) {
@@ -283,20 +378,19 @@ const GallerySection = () => {
   const selectedEntry = galleryYears.find((g) => g.year === selectedYear);
 
   return (
-    <motion.section
-      id="gallery"
-      className="gallery-container"
-      ref={ref}
-      initial={isMobile ? false : { opacity: 0, y: 50 }}
-      animate={isMobile ? undefined : controls}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-    >
+    <section id="gallery" className="gallery-container" ref={ref}>
+
       {/* ── Desktop title ── */}
-      <h2 className="gallery-title">
+      <motion.h2
+        className="gallery-title"
+        initial={{ opacity: 0, y: 40 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <div className="gallery-title-box">
           <span>GALLERY</span>
         </div>
-      </h2>
+      </motion.h2>
 
       {/* ── Mobile title — trapezoid from right ── */}
       <motion.div
@@ -318,27 +412,16 @@ const GallerySection = () => {
         <div className="desktop-gallery-block">
 
           <div className={`thumbnail-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 justify-items-center ${selectedYear ? "thumbnails-hidden" : ""}`}>
-            {galleryYears.map(({ year, image }) => (
-              <motion.div
+            {galleryYears.map(({ year, image }, index) => (
+              <DesktopThumbnail
                 key={year}
-                layoutId={`card-${year}`}
-                className="thumbnail-wrapper"
-                onClick={() => !selectedYear && setSelectedYear(year)}
-                animate={{
-                  opacity: selectedYear && selectedYear !== year ? 0 : 1,
-                  pointerEvents: selectedYear ? "none" : "auto",
-                }}
-                transition={{ duration: 0.2 }}
-              >
-                <div className="frame-white" />
-                <div className="frame-red" />
-                <div className="thumbnail-image-box">
-                  <img src={image} alt={year} className="thumbnail-image" />
-                </div>
-                <div className="thumb-star thumb-star-tl"><StarIcon /></div>
-                <div className="thumb-star thumb-star-br"><StarIcon /></div>
-                <div className="year-bubble"><span>{year}</span></div>
-              </motion.div>
+                year={year}
+                image={image}
+                index={index}
+                selectedYear={selectedYear}
+                onSelect={setSelectedYear}
+                inView={inView}
+              />
             ))}
           </div>
 
@@ -383,7 +466,7 @@ const GallerySection = () => {
         )}
 
       </div>
-    </motion.section>
+    </section>
   );
 };
 
