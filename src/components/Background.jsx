@@ -17,6 +17,13 @@ export default function Background() {
         <div className="star star-4" style={{ backgroundImage: `url(${BASE}white_star.png)` }} />
         <div className="star star-5" style={{ backgroundImage: `url(${BASE}red_star.png)` }} />
         <div className="star star-6" style={{ backgroundImage: `url(${BASE}white_star.png)` }} />
+        {/* Mobile star clusters — hidden on desktop via CSS */}
+        <div className="star star-m1" style={{ backgroundImage: `url(${BASE}white_star.png)` }} />
+        <div className="star star-m2" style={{ backgroundImage: `url(${BASE}red_star.png)` }} />
+        <div className="star star-m3" style={{ backgroundImage: `url(${BASE}red_star.png)` }} />
+        <div className="star star-b1" style={{ backgroundImage: `url(${BASE}red_star.png)` }} />
+        <div className="star star-b2" style={{ backgroundImage: `url(${BASE}white_star.png)` }} />
+        <div className="star star-b3" style={{ backgroundImage: `url(${BASE}red_star.png)` }} />
       </div>
     </>
   );

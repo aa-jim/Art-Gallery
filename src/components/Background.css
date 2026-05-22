@@ -34,7 +34,7 @@
   ); /* push it off screen to the right — adjust % to taste */
 }
 
-/* Stars — positioned relative to .bg-scroll-right */
+/* Stars — positioned relative to viewport (fixed container) */
 .stars-container {
   position: fixed;
   top: 0;
@@ -53,6 +53,7 @@
   mix-blend-mode: screen;
 }
 
+/* ── Desktop star positions ── */
 .star-1 {
   width: 42px;
   height: 42px;
@@ -88,4 +89,109 @@
   height: 24px;
   top: 180px;
   right: 220px;
+}
+
+/* Mobile-only stars — hidden on desktop */
+.star-m1,
+.star-m2,
+.star-m3,
+.star-m4,
+.star-b1,
+.star-b2,
+.star-b3 {
+  display: none;
+}
+
+/* ════════════════════════════════════════
+   MOBILE STYLES
+════════════════════════════════════════ */
+@media (max-width: 768px) {
+  /* Darken left zigzag, drop screen blend */
+  .bg-fixed-left {
+    mix-blend-mode: normal;
+    filter: brightness(0.6) saturate(0.7);
+  }
+
+  /* Hide right zigzag entirely */
+  .bg-scroll-right {
+    display: none;
+  }
+
+  /* Give stars-container full viewport size so left-positioned stars work */
+  .stars-container {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  /* Stars render solid — no screen blend */
+  .star {
+    mix-blend-mode: normal;
+  }
+
+  /* Hide all desktop stars */
+  .star-1,
+  .star-2,
+  .star-3,
+  .star-4,
+  .star-5,
+  .star-6 {
+    display: none;
+  }
+
+  /* ── Show mobile stars ── */
+  .star-m1,
+  .star-m2,
+  .star-m3,
+  .star-m4,
+  .star-b1,
+  .star-b2,
+  .star-b3 {
+    display: block;
+  }
+
+  /* Mid-right cluster (~58–65vh) */
+  .star-m1 {
+    /* white star — large */
+    width: 38px;
+    height: 38px;
+    top: 58vh;
+    right: 40px;
+  }
+  .star-m2 {
+    /* red star — medium */
+    width: 32px;
+    height: 32px;
+    top: 64vh;
+    right: 80px;
+  }
+  .star-m3 {
+    /* red star — small */
+    width: 30px;
+    height: 30px;
+    top: 67vh;
+    right: 30px;
+  }
+
+  /* Bottom-left cluster (~83–91vh) */
+  .star-b1 {
+    /* red star — small top */
+    width: 32px;
+    height: 32px;
+    top: 77vh;
+    left: 22px;
+  }
+  .star-b2 {
+    /* white star — medium center */
+    width: 38px;
+    height: 38px;
+    top: 81.5vh;
+    left: 56px;
+  }
+  .star-b3 {
+    /* red star — small bottom */
+    width: 30px;
+    height: 30px;
+    top: 87vh;
+    left: 20px;
+  }
 }
