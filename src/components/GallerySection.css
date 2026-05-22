@@ -1,88 +1,428 @@
 .gallery-container {
-  padding: 6rem 2rem;
+  padding: 12rem 2rem;
   text-align: center;
 }
 
 .gallery-title {
+  position: relative;
+  display: inline-block;
+  margin-bottom: 4rem;
+}
+
+.gallery-title::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #fd0000;
+  transform: skewX(-12deg) rotate(-5deg);
+  z-index: 0;
+}
+
+.gallery-title-box {
+  position: relative;
+  z-index: 1;
+  background-color: #000;
+  border: 4px solid white;
+  transform: skewX(-12deg);
+  padding: 0.4rem 2.5rem;
+}
+
+.gallery-title-box span {
+  display: inline-block;
+  transform: skewX(12deg);
+  color: white;
+  font-family: "Anton", "Impact", sans-serif;
   font-size: 3rem;
-  color: #fd0000;
-  font-weight: 900;
   letter-spacing: 2px;
-  text-align: center;
-  margin-bottom: 2rem;
+}
+
+/* Mobile title — hidden on desktop */
+.gallery-mobile-title-wrap {
+  display: none;
+}
+
+/* ── Gallery content area ── */
+.gallery-content {
   position: relative;
 }
 
-.gallery-underline {
-  display: block;
-  height: 2px;
-  background-color: #b30000;
-  width: 25%;
-  margin: 0.5rem auto 0;
-  z-index: 20;
-}
-
-.thumbnail-box {
+/* ── Thumbnail Wrapper ── */
+.thumbnail-wrapper {
   position: relative;
   width: 250px;
   height: 250px;
-  border: 4px solid #fd0000;
-  overflow: hidden;
-  transition: transform 0.3s ease;
   cursor: pointer;
-  background-color: black;
-  z-index: 5;
 }
 
-.thumbnail-box:hover {
-  transform: scale(1.05);
+.frame-white {
+  position: absolute;
+  inset: 0;
+  background-color: black;
+  border: 7px solid white;
+  transform: rotate(-6deg);
+  z-index: 1;
+  transition: transform 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.frame-red {
+  position: absolute;
+  inset: 0;
+  background-color: #fd0000;
+  border: 7px solid #fd0000;
+  transform: rotate(3deg);
+  z-index: 2;
+  transition: transform 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+.thumbnail-image-box {
+  position: absolute;
+  transform: rotate(3deg);
+  inset: 8px;
+  z-index: 3;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+  border: 7px solid #000;
+  background-color: black;
 }
 
 .thumbnail-image {
   width: 100%;
   height: 100%;
+  transform: rotate(-3deg);
   object-fit: cover;
   display: block;
-  z-index: 6;
 }
 
+/* Stars */
+.thumb-star {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  transition: transform 0.3s ease;
+}
+
+.thumb-star-tl {
+  width: 70px;
+  height: 70px;
+  top: -30px;
+  left: -18px;
+  transform: rotate(20deg);
+}
+
+.thumb-star-br {
+  width: 54px;
+  height: 54px;
+  bottom: -15px;
+  right: -15px;
+  transform: rotate(-20deg);
+}
+
+/* Year tag */
 .year-bubble {
   position: absolute;
-  bottom: 10px;
-  left: 10px;
-  background-color: black;
-  border: 3px solid white;
+  bottom: 16px;
+  left: 20px;
+  z-index: 6;
+  background-color: #fd0000;
   color: white;
-  padding: 6px 12px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Anton", "Montserrat", sans-serif;
   font-size: 1rem;
+  padding: 3px 14px;
   transform: skewX(-10deg);
-  box-shadow: 3px 3px 0 white;
+  border: 4px solid black;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.year-bubble span {
+  display: inline-block;
+  transform: skewX(10deg);
+}
+
+/* ── Hover ── */
+.thumbnail-wrapper:hover .frame-white {
+  transform: rotate(-8deg);
+}
+.thumbnail-wrapper:hover .frame-red {
+  transform: rotate(5deg);
+}
+.thumbnail-wrapper:hover .thumbnail-image-box {
+  transform: rotate(5deg);
+}
+.thumbnail-wrapper:hover .thumb-star-tl {
+  transform: rotate(-5deg);
+}
+.thumbnail-wrapper:hover .thumb-star-br {
+  transform: rotate(5deg);
+}
+.thumbnail-wrapper:hover .year-bubble {
+  opacity: 1;
+}
+
+/* ── Expanded wrapper — overlays the grid ── */
+.expanded-inline-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  padding: 2rem 0;
+  overflow: visible;
+}
+
+/* Click outside backdrop */
+.expanded-click-outside {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  cursor: pointer;
+}
+
+/* Keep grid visible underneath but faded */
+.thumbnails-hidden .thumbnail-wrapper {
+  pointer-events: none;
+}
+
+/* ── Mobile-only elements — hidden on desktop ── */
+.gallery-mobile-title-wrap,
+.mobile-gallery-carousel,
+.mobile-expanded-wrapper {
   display: none;
-  z-index: 7;
 }
 
-.thumbnail-box:hover .year-bubble {
-  display: block;
-}
-
+/* ── Responsive desktop ── */
 @media (max-width: 1024px) {
   .thumbnail-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr) !important;
   }
 }
 
-@media (max-width: 640px) {
-  .thumbnail-grid {
-    grid-template-columns: 1fr;
+/* ════════════════════════════════════════
+   MOBILE STYLES
+════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .gallery-container {
+    padding: 2rem 0 5rem;
+    overflow-x: hidden;
+    margin-top: 8rem;
   }
 
-  .thumbnail-box {
+  /* ── Hide ALL desktop-only elements ── */
+  .gallery-title,
+  .desktop-gallery-block {
+    display: none !important;
+  }
+
+  /* ── Show mobile-only elements ── */
+  .gallery-mobile-title-wrap {
+    display: block;
+    position: relative;
+    width: 70%;
+    margin-left: auto;
+    margin-right: 0;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .gallery-mobile-box {
+    position: relative;
+    z-index: 1;
+    background: #000;
+    clip-path: polygon(100% 25%, 5% 0%, 15% 100%, 100% 100%);
+    padding: 18px 24px 8px 32px;
+    text-align: center;
+    transform: translateX(20px);
+  }
+
+  .gallery-mobile-shadow {
+    position: absolute;
+    inset: 0;
+    background: white;
+    clip-path: polygon(100% 25%, 5% 0%, 15% 100%, 100% 100%);
+    transform: translate(14px, 8px);
+    z-index: 0;
+  }
+
+  .gallery-mobile-border {
+    position: absolute;
+    inset: 1px;
+    background: white;
+    z-index: 1;
+    clip-path: polygon(100% 25%, 5% 0%, 15% 100%, 100% 100%);
+    transform: translate(14px, -4px);
+  }
+
+  .gallery-mobile-box span {
+    font-family: "Anton", "Impact", sans-serif;
+    font-size: 2rem;
+    color: white;
+    letter-spacing: 2px;
+  }
+
+  /* ── Mobile carousel ── */
+  .mobile-gallery-carousel {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    padding: 40px 0 20px;
+    position: relative;
+  }
+
+  .mobile-carousel-track {
+    position: relative;
+    width: 100%;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: pan-y;
+    user-select: none;
+  }
+
+  .mobile-card-wrapper {
+    position: absolute;
     width: 200px;
     height: 200px;
+    cursor: pointer;
+    will-change: transform, opacity;
   }
 
-  .year-bubble {
-    font-size: 0.9rem;
+  /* P5 frame on mobile cards */
+  .mobile-frame-white {
+    position: absolute;
+    inset: 0;
+    background-color: black;
+    border: 6px solid white;
+    transform: rotate(-6deg);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .mobile-frame-red {
+    position: absolute;
+    inset: 0;
+    background-color: #fd0000;
+    border: 6px solid #fd0000;
+    transform: rotate(3deg);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .mobile-image-box {
+    position: absolute;
+    inset: 7px;
+    z-index: 3;
+    overflow: hidden;
+    border: 6px solid #000;
+    background-color: black;
+    transform: rotate(3deg);
+  }
+
+  .mobile-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: rotate(-3deg) scale(1.08);
+  }
+
+  /* Stars on mobile cards */
+  .mobile-thumb-star {
+    position: absolute;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .mobile-star-tl {
+    width: 56px;
+    height: 56px;
+    top: -24px;
+    left: -14px;
+    transform: rotate(20deg);
+  }
+
+  .mobile-star-br {
+    width: 44px;
+    height: 44px;
+    bottom: -12px;
+    right: -12px;
+    transform: rotate(-20deg);
+  }
+
+  /* Year bubble — always visible on mobile */
+  .mobile-year-bubble {
+    position: absolute;
+    bottom: 14px;
+    left: 16px;
+    z-index: 6;
+    background-color: #fd0000;
+    color: white;
+    font-family: "Anton", "Montserrat", sans-serif;
+    font-size: 0.85rem;
+    padding: 2px 10px;
+    transform: skewX(-10deg);
+    border: 3px solid black;
+    pointer-events: none;
+  }
+
+  .mobile-year-bubble span {
+    display: inline-block;
+    transform: skewX(10deg);
+  }
+
+  /* Dot indicators
+  .mobile-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .mobile-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition:
+      background 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .mobile-dot.active {
+    background: #fd0000;
+    transform: scale(1.3);
+  }*/
+
+  /* ── Mobile expanded gallery ── */
+  .mobile-expanded-wrapper {
+    display: block;
+    width: 100%;
+    padding: 2rem 1rem;
+    position: relative;
   }
 }
+
+/*@media (max-width: 480px) {
+
+  .gallery-mobile-box {
+    padding: 14px 18px 10px 24px;
+  }
+
+  .gallery-mobile-box span {
+    font-size: 1.3rem;
+  }
+
+  .gallery-mobile-border {
+    transform: translate(0px, -2px);
+  }
+
+  .gallery-mobile-shadow {
+    transform: translate(0px, 4px);
+  }
+}*/

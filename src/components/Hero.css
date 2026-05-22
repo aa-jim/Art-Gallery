@@ -1,12 +1,10 @@
 .hero-container {
-  padding: 4rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  padding: 2rem 1rem 5.1rem;
   position: relative;
-  padding: 2rem 1rem 3rem;
-  margin: 0;
   z-index: 1;
 }
 
@@ -14,51 +12,151 @@
   font-size: 3.85rem;
   color: white;
   font-weight: 900;
-  letter-spacing: 1px;
-}
-
-.red-text {
-  color: #ff003c;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: left;
+  padding-left: 2rem;
 }
 
 .hero-subtext {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   font-size: 1.3rem;
   color: #e5e5e5;
   text-shadow: 1px 1px 0 black;
+  text-align: left;
+  padding-left: 2rem;
 }
 
-.hero-button {
-  background: red;
-  color: white;
-  font-weight: bold;
-  padding: 12px 30px;
-  cursor: pointer;
-  clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
-  transition: background-color 1s, color 1s;
+.hero-mobile-box-wrap {
+  display: none;
 }
 
 @media (max-width: 768px) {
-  .hero-title {
-    font-size: 2.5rem;
+  .hero-container {
+    padding: 0;
+    align-items: flex-start;
   }
 
-  .hero-subtext {
-    font-size: 1.1rem;
+  /* Hide desktop elements on mobile */
+  .hero-title,
+  .hero-subtext,
+  .wavy-button-wrapper {
+    display: none;
   }
 
-  .wavy-button {
-    padding: 0.6rem 1.2rem;
-    font-size: 0.9rem;
+  /* Full-width trapezoid box — title + subtext inside */
+  .hero-mobile-box-wrap {
+    position: relative;
+    width: calc(100% + 8px);
+    margin-left: -4px;
+    margin-top: 8rem;
+    display: block;
+  }
+
+  .hero-mobile-shadow {
+    position: absolute;
+    inset: 0;
+    background: white;
+    clip-path: polygon(0% 20%, 100% 0%, 90% 100%, 0% 100%);
+    transform: translate(-18px, 6px);
+    z-index: 0;
+  }
+
+  .hero-mobile-border {
+    content: "";
+    position: absolute;
+    inset: 1px; /* border thickness */
+    background: white;
+    z-index: -1;
+    clip-path: polygon(0% 27%, 100% 0%, 90% 100%, 0% 100%);
+    transform: translate(-19px, -4px);
+  }
+
+  .hero-mobile-box {
+    position: relative;
+    z-index: 1;
+    background: #000;
+    clip-path: polygon(0% 25%, 95% 0%, 85% 100%, 0% 100%);
+    padding: 20px 28px 20px 20px;
+  }
+
+  .hero-mobile-title {
+    font-family: "Anton", "Impact", sans-serif;
+    font-size: 2rem;
+    color: white;
+    letter-spacing: 1px;
+    margin: 0 0 4px;
+    text-transform: uppercase;
+    transform: translateY(6px);
+  }
+
+  .hero-mobile-subtext {
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.8rem;
+    color: #ccc;
+    margin: 0;
+    line-height: 1.4;
+    transform: translateY(6px);
   }
 }
 
 @media (max-width: 480px) {
-  .hero-title {
-    font-size: 2rem;
+  .hero-container {
+    padding: 0;
+    align-items: flex-start;
   }
 
-  .hero-subtext {
-    font-size: 1rem;
+  /* Full-width trapezoid box */
+  .hero-mobile-box-wrap {
+    position: relative;
+    width: calc(100% + 8px);
+    margin-left: -4px;
+    margin-top: 8rem;
+    display: block;
+  }
+
+  .hero-mobile-shadow {
+    position: absolute;
+    inset: 0;
+    background: white;
+    clip-path: polygon(0% 20%, 100% 0%, 90% 100%, 0% 100%);
+    transform: translate(-14px, 8px);
+    z-index: 0;
+  }
+
+  .hero-mobile-border {
+    position: absolute;
+    inset: 1px;
+    background: white;
+    z-index: -1;
+    clip-path: polygon(0% 27%, 100% 0%, 90% 100%, 0% 100%);
+    transform: translate(-13px, -4px);
+  }
+
+  .hero-mobile-box {
+    position: relative;
+    z-index: 1;
+    background: #000;
+    clip-path: polygon(0% 25%, 95% 0%, 85% 100%, 0% 100%);
+    padding: 20px 28px 20px 20px;
+  }
+
+  .hero-mobile-title {
+    font-family: "Anton", "Impact", sans-serif;
+    font-size: 2rem;
+    color: white;
+    letter-spacing: 1px;
+    margin: 0 0 4px;
+    text-transform: uppercase;
+    transform: translateY(6px);
+  }
+
+  .hero-mobile-subtext {
+    font-family: "Montserrat", sans-serif;
+    font-size: 0.75rem;
+    color: #ccc;
+    margin: 0;
+    line-height: 1.4;
+    transform: translateY(6px);
   }
 }

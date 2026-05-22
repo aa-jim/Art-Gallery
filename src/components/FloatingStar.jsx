@@ -1,10 +1,10 @@
 import React from "react";
 
-const FloatingStar = ({ color = "red", top, left, size = 48, delay = 0 }) => {
+const FloatingStar = ({ color = "red", top, left, size = 48 }) => {
   const starSrc =
     color === "red"
-      ? "/assets/red_star.png"
-      : "/assets/white_star.png";
+      ? process.env.PUBLIC_URL + "/assets/red_star.png"
+      : process.env.PUBLIC_URL + "/assets/white_star.png";
 
   const style = {
     position: "absolute",
@@ -17,8 +17,7 @@ const FloatingStar = ({ color = "red", top, left, size = 48, delay = 0 }) => {
     backgroundPosition: "center",
     backgroundSize: "contain",
     pointerEvents: "none",
-    animation: `float 6s ease-in-out infinite`,
-    animationDelay: `${delay}s`,
+    mixBlendMode: "screen",
     zIndex: 1,
   };
 
