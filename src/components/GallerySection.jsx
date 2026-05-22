@@ -162,16 +162,115 @@ const galleryYears = [
   },
 ];
 
+/* ─────────────────────────────────────────
+   MOBILE GALLERY — horizontal swipe carousel
+───────────────────────────────────────── */
+const MobileGallery = ({ onOpenYear }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartX = useRef(0);
+  const SIDE_OFFSET = 200; // how much the side cards peek out
+
+  const goTo = (index) => {
+    const clamped = Math.max(0, Math.min(index, galleryYears.length - 1));
+    setActiveIndex(clamped);
+  };
+
+  const handleDragStart = (e) => {
+    dragStartX.current = e.touches ? e.touches[0].clientX : e.clientX;
+    setIsDragging(false);
+  };
+
+  const handleDragEnd = (e) => {
+    const endX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+    const diff = dragStartX.current - endX;
+    if (Math.abs(diff) > 40) {
+      setIsDragging(true);
+      goTo(activeIndex + (diff > 0 ? 1 : -1));
+    }
+  };
+
+  const handleCardClick = (index) => {
+    if (isDragging) return;
+    if (index === activeIndex) {
+      onOpenYear(galleryYears[index].year);
+    } else {
+      goTo(index);
+    }
+  };
+
+  return (
+    <div className="mobile-gallery-carousel">
+      <div
+        className="mobile-carousel-track"
+        onTouchStart={handleDragStart}
+        onTouchEnd={handleDragEnd}
+        onMouseDown={handleDragStart}
+        onMouseUp={handleDragEnd}
+      >
+        {galleryYears.map(({ year, image }, index) => {
+          const offset = index - activeIndex;
+          const isCenter = offset === 0;
+          const isVisible = Math.abs(offset) <= 1;
+          const translateX = offset * SIDE_OFFSET;
+          const scale = isCenter ? 1 : 0.72;
+          const opacity = isCenter ? 1 : 0.45;
+          const zIndex = isCenter ? 5 : 3 - Math.abs(offset);
+
+          return (
+            <motion.div
+              key={year}
+              className="mobile-card-wrapper"
+              animate={{ x: translateX, scale, opacity: isVisible ? opacity : 0, zIndex }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              onClick={() => handleCardClick(index)}
+              style={{ pointerEvents: isVisible ? "auto" : "none" }}
+            >
+              <div className="mobile-frame-white" />
+              <div className="mobile-frame-red" />
+              <div className="mobile-image-box">
+                <img src={image} alt={year} className="mobile-card-img" />
+              </div>
+              <div className="mobile-thumb-star mobile-star-tl"><StarIcon /></div>
+              <div className="mobile-thumb-star mobile-star-br"><StarIcon /></div>
+              <div className="mobile-year-bubble"><span>{year}</span></div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      <div className="mobile-dots">
+        {galleryYears.map((_, i) => (
+          <button
+            key={i}
+            className={`mobile-dot${i === activeIndex ? " active" : ""}`}
+            onClick={() => goTo(i)}
+            aria-label={`Go to ${galleryYears[i].year}`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ─────────────────────────────────────────
+   MAIN GALLERY SECTION
+───────────────────────────────────────── */
 const GallerySection = () => {
   const isMobile = window.innerWidth <= 768;
   const controls = useAnimation();
+  const titleControls = useAnimation();
   const [ref, inView] = useInView({ triggerOnce: true, threshold: 0.2 });
   const [selectedYear, setSelectedYear] = useState(null);
   const expandedRef = useRef(null);
+  const mobileExpandedRef = useRef(null);
 
   useEffect(() => {
-    if (inView) controls.start({ opacity: 1, y: 0 });
-  }, [inView, controls]);
+    if (inView) {
+      controls.start({ opacity: 1, y: 0 });
+      titleControls.start({ opacity: 1, x: 0 });
+    }
+  }, [inView, controls, titleControls]);
 
   useEffect(() => {
     if (selectedYear && expandedRef.current) {
@@ -192,64 +291,96 @@ const GallerySection = () => {
       animate={isMobile ? undefined : controls}
       transition={{ duration: 0.8, ease: "easeOut" }}
     >
+      {/* ── Desktop title ── */}
       <h2 className="gallery-title">
         <div className="gallery-title-box">
           <span>GALLERY</span>
         </div>
       </h2>
 
+      {/* ── Mobile title — trapezoid from right ── */}
+      <motion.div
+        className="gallery-mobile-title-wrap"
+        initial={{ opacity: 0, x: 120 }}
+        animate={titleControls}
+        transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
+      >
+        <div className="gallery-mobile-shadow" />
+        <div className="gallery-mobile-border" />
+        <div className="gallery-mobile-box">
+          <span>GALLERY</span>
+        </div>
+      </motion.div>
+
       <div className="gallery-content max-w-[1000px] mx-auto">
 
-        {/* Thumbnail grid — always rendered, thumbnails fade out when one is selected */}
-        <div className={`thumbnail-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 justify-items-center ${selectedYear ? "thumbnails-hidden" : ""}`}>
-          {galleryYears.map(({ year, image }) => (
-            <motion.div
-              key={year}
-              layoutId={`card-${year}`}
-              className="thumbnail-wrapper"
-              onClick={() => !selectedYear && setSelectedYear(year)}
-              animate={{
-                opacity: selectedYear && selectedYear !== year ? 0 : 1,
-                pointerEvents: selectedYear ? "none" : "auto",
-              }}
-              transition={{ duration: 0.2 }}
-            >
-              <div className="frame-white" />
-              <div className="frame-red" />
-              <div className="thumbnail-image-box">
-                <img src={image} alt={year} className="thumbnail-image" />
-              </div>
-              <div className="thumb-star thumb-star-tl"><StarIcon /></div>
-              <div className="thumb-star thumb-star-br"><StarIcon /></div>
-              <div className="year-bubble"><span>{year}</span></div>
-            </motion.div>
-          ))}
+        {/* ── Desktop: grid + expanded — hidden on mobile via CSS ── */}
+        <div className="desktop-gallery-block">
+
+          <div className={`thumbnail-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 justify-items-center ${selectedYear ? "thumbnails-hidden" : ""}`}>
+            {galleryYears.map(({ year, image }) => (
+              <motion.div
+                key={year}
+                layoutId={`card-${year}`}
+                className="thumbnail-wrapper"
+                onClick={() => !selectedYear && setSelectedYear(year)}
+                animate={{
+                  opacity: selectedYear && selectedYear !== year ? 0 : 1,
+                  pointerEvents: selectedYear ? "none" : "auto",
+                }}
+                transition={{ duration: 0.2 }}
+              >
+                <div className="frame-white" />
+                <div className="frame-red" />
+                <div className="thumbnail-image-box">
+                  <img src={image} alt={year} className="thumbnail-image" />
+                </div>
+                <div className="thumb-star thumb-star-tl"><StarIcon /></div>
+                <div className="thumb-star thumb-star-br"><StarIcon /></div>
+                <div className="year-bubble"><span>{year}</span></div>
+              </motion.div>
+            ))}
+          </div>
+
+          <AnimatePresence>
+            {selectedYear && selectedEntry && (
+              <>
+                <div
+                  className="expanded-click-outside"
+                  onClick={() => setSelectedYear(null)}
+                />
+                <motion.div
+                  ref={expandedRef}
+                  layoutId={`card-${selectedYear}`}
+                  className="expanded-inline-wrapper"
+                  transition={{ type: "spring", stiffness: 180, damping: 26 }}
+                >
+                  <ExpandedGallery
+                    year={selectedYear}
+                    images={selectedEntry.images}
+                    onClose={() => setSelectedYear(null)}
+                  />
+                </motion.div>
+              </>
+            )}
+          </AnimatePresence>
+
         </div>
 
-        {/* Expanded gallery — renders over the grid using layoutId morph */}
-        <AnimatePresence>
-          {selectedYear && selectedEntry && (
-            <>
-              {/* Click outside to close */}
-              <div
-                className="expanded-click-outside"
-                onClick={() => setSelectedYear(null)}
-              />
-              <motion.div
-                ref={expandedRef}
-                layoutId={`card-${selectedYear}`}
-                className="expanded-inline-wrapper"
-                transition={{ type: "spring", stiffness: 180, damping: 26 }}
-              >
-                <ExpandedGallery
-                  year={selectedYear}
-                  images={selectedEntry.images}
-                  onClose={() => setSelectedYear(null)}
-                />
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+        {/* ── Mobile: carousel + expanded — hidden on desktop via CSS ── */}
+        {!selectedYear && (
+          <MobileGallery onOpenYear={(year) => setSelectedYear(year)} />
+        )}
+
+        {selectedYear && selectedEntry && (
+          <div className="mobile-expanded-wrapper" ref={mobileExpandedRef}>
+            <ExpandedGallery
+              year={selectedYear}
+              images={selectedEntry.images}
+              onClose={() => setSelectedYear(null)}
+            />
+          </div>
+        )}
 
       </div>
     </motion.section>

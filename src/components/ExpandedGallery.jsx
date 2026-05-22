@@ -40,6 +40,25 @@ const ExpandedGallery = ({ images, year, onClose }) => {
     setCenterIndex(index);
   };
 
+  // Detect which image is closest to center after any scroll (touch or wheel)
+  const updateCenterIndex = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const containerCenter = el.scrollLeft + el.clientWidth / 2;
+    let closest = 0;
+    let minDist = Infinity;
+    Array.from(el.children).forEach((child, i) => {
+      const childCenter = child.offsetLeft + child.offsetWidth / 2;
+      const dist = Math.abs(containerCenter - childCenter);
+      if (dist < minDist) {
+        minDist = dist;
+        closest = i;
+      }
+    });
+    setCenterIndex(closest);
+  };
+
+  // Mouse wheel — step one image at a time
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
@@ -60,6 +79,22 @@ const ExpandedGallery = ({ images, year, onClose }) => {
     return () => el.removeEventListener("wheel", handleWheel);
   }, [centerIndex, images.length]);
 
+  // Touch scroll — update center after scroll settles
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    let scrollTimer = null;
+    const handleScroll = () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(() => {
+        updateCenterIndex();
+      }, 80);
+    };
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Keyboard
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") { onClose(); return; }
@@ -74,8 +109,12 @@ const ExpandedGallery = ({ images, year, onClose }) => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [centerIndex, images.length, onClose]);
 
+  const isMobile = window.innerWidth <= 768;
+
   return (
     <div className="expanded-gallery-wrapper">
+      <div className="exp-border-white" />
+      <div className="exp-border-red" />
       <StarSVG className="exp-star-tl" />
 
       <div className="year-badge">
@@ -101,6 +140,7 @@ const ExpandedGallery = ({ images, year, onClose }) => {
           padding: "0 2rem",
           gap: "1.5rem",
           boxSizing: "border-box",
+          maxHeight: "100%",
         }}
       >
         {images.map((src, index) => (
@@ -110,8 +150,9 @@ const ExpandedGallery = ({ images, year, onClose }) => {
             alt={`Art ${index + 1}`}
             className="scroll-item"
             style={{
-              minWidth: "220px",
-              maxHeight: "340px",
+              minWidth: isMobile ? "auto" : "220px",
+              maxWidth: isMobile ? "100%" : "340px",
+              maxHeight: isMobile ? "45vh" : "340px",
               flexShrink: 0,
               objectFit: "contain",
               width: "auto",
