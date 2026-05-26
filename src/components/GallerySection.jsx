@@ -3,6 +3,7 @@ import { motion, useAnimation, AnimatePresence } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import "./GallerySection.css";
 import ExpandedGallery from "./ExpandedGallery";
+import { client } from "../sanityClient";
 
 const StarIcon = () => (
   <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
@@ -15,156 +16,20 @@ const StarIcon = () => (
   </svg>
 );
 
-const galleryYears = [
-  {
-    year: "2020",
-    image: process.env.PUBLIC_URL + "/assets/2020.jpg",
-    images: [
-      process.env.PUBLIC_URL + "/assets/2020/Aug/art (1).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Aug/art (2).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Aug/art (3).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Aug/art (4).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Aug/art (5).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Aug/art (6).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Aug/art (7).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Aug/art (8).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Aug/art (9).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Sep/art (1).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Sep/art (2).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Sep/art (3).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Sep/art (4).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Sep/art (5).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Sep/art (6).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Sep/art (7).webp",
-      process.env.PUBLIC_URL + "/assets/2020/Oct/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Oct/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Oct/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Oct/art (4).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Oct/art (5).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Oct/art (6).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Oct/art (7).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Nov/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Nov/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Dec/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Dec/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Dec/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Dec/art (4).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Dec/art (5).jpg",
-      process.env.PUBLIC_URL + "/assets/2020/Dec/art (6).jpg",
-    ],
-  },
-  {
-    year: "2021",
-    image: process.env.PUBLIC_URL + "/assets/2021.jpg",
-    images: [
-      process.env.PUBLIC_URL + "/assets/2021/Jan/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Jan/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Jan/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Feb/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Feb/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Feb/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Mar/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Mar/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Mar/art (3).jpeg",
-      process.env.PUBLIC_URL + "/assets/2021/Apr/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Apr/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Apr/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Apr/art (4).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/May/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/May/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/June/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2021/July/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/July/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Aug/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Aug/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Aug/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Sep/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Sep/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Oct/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Oct/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Oct/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Nov/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Nov/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Nov/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Nov/art (4).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Nov/art (5).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Dec/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Dec/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Dec/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Dec/art (4).jpg",
-      process.env.PUBLIC_URL + "/assets/2021/Dec/art (5).jpg",
-    ],
-  },
-  {
-    year: "2022",
-    image: process.env.PUBLIC_URL + "/assets/2022.jpg",
-    images: [
-      process.env.PUBLIC_URL + "/assets/2022/Jan/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Jan/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Feb/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Feb/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Feb/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Feb/art (4).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Feb/art (5).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Mar/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Mar/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Mar/art (3).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Mar/art (4).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Mar/art (5).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Mar/art (5).jpeg",
-      process.env.PUBLIC_URL + "/assets/2022/Mar/art (6).jpeg",
-      process.env.PUBLIC_URL + "/assets/2022/Mar/art (7).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Apr/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Apr/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/May/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2022/June/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/June/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/June/art (3).jpeg",
-      process.env.PUBLIC_URL + "/assets/2022/July/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Sep/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Sep/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Oct/art.jpeg",
-      process.env.PUBLIC_URL + "/assets/2022/Dec/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Dec/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2022/Dec/art (3).jpg",
-    ],
-  },
-  {
-    year: "2023",
-    image: process.env.PUBLIC_URL + "/assets/2023.jpg",
-    images: [
-      process.env.PUBLIC_URL + "/assets/2023/Jan/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2023/Mar/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2023/Dec/art.jpg",
-    ],
-  },
-  {
-    year: "2024",
-    image: process.env.PUBLIC_URL + "/assets/2024.jpg",
-    images: [
-      process.env.PUBLIC_URL + "/assets/2024/Feb/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2024/Mar/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2024/Apr/art (1).jpg",
-      process.env.PUBLIC_URL + "/assets/2024/Apr/art (2).jpg",
-      process.env.PUBLIC_URL + "/assets/2024/May/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2024/June/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2024/July/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2024/Nov/art.jpg",
-    ],
-  },
-  {
-    year: "2025",
-    image: process.env.PUBLIC_URL + "/assets/2025.jpg",
-    images: [
-      process.env.PUBLIC_URL + "/assets/2025/Mar/art.jpg",
-      process.env.PUBLIC_URL + "/assets/2025/May/art.jpg",
-    ],
-  },
-];
+/* ──────────────────────────────────────────────────────────────────────────
+   GROQ query — sort artworks chronologically via monthIndex
+────────────────────────────────────────────────────────────────────────── */
+const GALLERY_QUERY = `
+  *[_type == "yearCover"] | order(year asc) {
+    year,
+    "coverImageUrl": coverImage.asset->url,
+    "images": *[_type == "artwork" && year == ^.year] | order(monthIndex asc, order asc) {
+      "url": image.asset->url,
+      month
+    }
+  }
+`;
 
-/* ─────────────────────────────────────────
-   Shared card inner content
-───────────────────────────────────────── */
 const CardInner = ({ image, year }) => (
   <>
     <div className="mobile-frame-white" />
@@ -178,10 +43,7 @@ const CardInner = ({ image, year }) => (
   </>
 );
 
-/* ─────────────────────────────────────────
-   MOBILE GALLERY — horizontal swipe carousel
-───────────────────────────────────────── */
-const MobileGallery = ({ onOpenYear }) => {
+const MobileGallery = ({ galleryYears, onOpenYear }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const [hasPopped, setHasPopped] = useState(false);
@@ -193,7 +55,6 @@ const MobileGallery = ({ onOpenYear }) => {
     rootMargin: "-25% 0px",
   });
 
-  // After spring settles, hand control to carousel spring
   useEffect(() => {
     if (carouselInView && !hasPopped) {
       const t = setTimeout(() => setHasPopped(true), 700);
@@ -238,7 +99,7 @@ const MobileGallery = ({ onOpenYear }) => {
         onMouseDown={handleDragStart}
         onMouseUp={handleDragEnd}
       >
-        {galleryYears.map(({ year, image }, index) => {
+        {galleryYears.map(({ year, coverImageUrl }, index) => {
           const offset = index - activeIndex;
           const isCenter = offset === 0;
           const isVisible = Math.abs(offset) <= 1;
@@ -248,7 +109,6 @@ const MobileGallery = ({ onOpenYear }) => {
           const zIndex = isCenter ? 5 : 3 - Math.abs(offset);
 
           if (hasPopped) {
-            // Pop done — pure carousel spring, no entrance interference
             return (
               <motion.div
                 key={year}
@@ -258,13 +118,11 @@ const MobileGallery = ({ onOpenYear }) => {
                 onClick={() => handleCardClick(index)}
                 style={{ pointerEvents: isVisible ? "auto" : "none" }}
               >
-                <CardInner image={image} year={year} />
+                <CardInner image={coverImageUrl} year={year} />
               </motion.div>
             );
           }
 
-          // Entrance pop — each card targets its OWN correct opacity/scale
-          // so side cards never flash as highlighted during pop
           return (
             <motion.div
               key={year}
@@ -283,7 +141,7 @@ const MobileGallery = ({ onOpenYear }) => {
               onClick={() => handleCardClick(index)}
               style={{ pointerEvents: isVisible && carouselInView ? "auto" : "none" }}
             >
-              <CardInner image={image} year={year} />
+              <CardInner image={coverImageUrl} year={year} />
             </motion.div>
           );
         })}
@@ -304,9 +162,11 @@ const MobileGallery = ({ onOpenYear }) => {
 };
 
 /* ─────────────────────────────────────────
-   DESKTOP THUMBNAIL — pop animation on reveal
+   DESKTOP THUMBNAIL
+   hasEnteredOnce — stagger only plays on the very first entrance.
+   All subsequent animations (expand/collapse) are instant, no delay.
 ───────────────────────────────────────── */
-const DesktopThumbnail = ({ year, image, index, selectedYear, onSelect, inView }) => {
+const DesktopThumbnail = ({ year, image, index, selectedYear, onSelect, inView, hasEnteredOnce }) => {
   return (
     <motion.div
       layoutId={`card-${year}`}
@@ -325,7 +185,8 @@ const DesktopThumbnail = ({ year, image, index, selectedYear, onSelect, inView }
       }
       transition={inView
         ? {
-            delay: index * 0.1,
+            // Stagger only on first entrance — never again after that
+            delay: hasEnteredOnce ? 0 : index * 0.1,
             type: "spring",
             stiffness: 380,
             damping: 22,
@@ -346,9 +207,18 @@ const DesktopThumbnail = ({ year, image, index, selectedYear, onSelect, inView }
   );
 };
 
-/* ─────────────────────────────────────────
-   MAIN GALLERY SECTION
-───────────────────────────────────────── */
+const GallerySkeleton = () => (
+  <div className="thumbnail-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 justify-items-center">
+    {Array.from({ length: 6 }).map((_, i) => (
+      <div key={i} className="thumbnail-wrapper" style={{ opacity: 0.15 }}>
+        <div className="frame-white" />
+        <div className="frame-red" />
+        <div className="thumbnail-image-box" style={{ background: "#222" }} />
+      </div>
+    ))}
+  </div>
+);
+
 const GallerySection = () => {
   const isMobile = window.innerWidth <= 768;
   const titleControls = useAnimation();
@@ -358,29 +228,60 @@ const GallerySection = () => {
     rootMargin: isMobile ? "-25% 0px" : "-35% 0px",
   });
   const [selectedYear, setSelectedYear] = useState(null);
+  const [hasEnteredOnce, setHasEnteredOnce] = useState(false);
   const expandedRef = useRef(null);
   const mobileExpandedRef = useRef(null);
+
+  const [galleryYears, setGalleryYears] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    client.fetch(GALLERY_QUERY)
+      .then((data) => {
+        setGalleryYears(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Sanity fetch error:", err);
+        setError("Failed to load gallery. Please try again later.");
+        setLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     if (inView) {
       titleControls.start({ opacity: 1, x: 0 });
+      // After the initial stagger plays (~0.6s for 6 cards), lock it off forever
+      const t = setTimeout(() => setHasEnteredOnce(true), 700);
+      return () => clearTimeout(t);
     }
   }, [inView, titleControls]);
 
   useEffect(() => {
     if (selectedYear && expandedRef.current) {
-      setTimeout(() => {
-        expandedRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
-      }, 300);
+      scrollBeforeExpand.current = window.scrollY;
+      const el = expandedRef.current;
+      const rect = el.getBoundingClientRect();
+      const targetTop = window.scrollY + rect.top - (window.innerHeight * 0.15);
+      window.scrollTo({ top: targetTop, behavior: "smooth" });
     }
   }, [selectedYear]);
+
+  const scrollBeforeExpand = useRef(0);
+
+  const handleClose = () => {
+    setSelectedYear(null);
+    setTimeout(() => {
+      window.scrollTo({ top: scrollBeforeExpand.current, behavior: "smooth" });
+    }, 50);
+  };
 
   const selectedEntry = galleryYears.find((g) => g.year === selectedYear);
 
   return (
     <section id="gallery" className="gallery-container" ref={ref}>
 
-      {/* ── Desktop title ── */}
       <motion.h2
         className="gallery-title"
         initial={{ opacity: 0, y: 40 }}
@@ -392,7 +293,6 @@ const GallerySection = () => {
         </div>
       </motion.h2>
 
-      {/* ── Mobile title — trapezoid from right ── */}
       <motion.div
         className="gallery-mobile-title-wrap"
         initial={{ opacity: 0, x: 120 }}
@@ -407,52 +307,55 @@ const GallerySection = () => {
       </motion.div>
 
       <div className="gallery-content max-w-[1000px] mx-auto">
+        {error && (
+          <p style={{ color: "#fd0000", textAlign: "center", fontFamily: "Montserrat", padding: "2rem" }}>
+            {error}
+          </p>
+        )}
 
-        {/* ── Desktop: grid + expanded — hidden on mobile via CSS ── */}
         <div className="desktop-gallery-block">
-
-          <div className={`thumbnail-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 justify-items-center ${selectedYear ? "thumbnails-hidden" : ""}`}>
-            {galleryYears.map(({ year, image }, index) => (
-              <DesktopThumbnail
-                key={year}
-                year={year}
-                image={image}
-                index={index}
-                selectedYear={selectedYear}
-                onSelect={setSelectedYear}
-                inView={inView}
-              />
-            ))}
-          </div>
+          {loading ? (
+            <GallerySkeleton />
+          ) : (
+            <div className={`thumbnail-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-16 justify-items-center ${selectedYear ? "thumbnails-hidden" : ""}`}>
+              {galleryYears.map(({ year, coverImageUrl }, index) => (
+                <DesktopThumbnail
+                  key={year}
+                  year={year}
+                  image={coverImageUrl}
+                  index={index}
+                  selectedYear={selectedYear}
+                  onSelect={setSelectedYear}
+                  inView={inView}
+                  hasEnteredOnce={hasEnteredOnce}
+                />
+              ))}
+            </div>
+          )}
 
           <AnimatePresence>
             {selectedYear && selectedEntry && (
               <>
-                <div
-                  className="expanded-click-outside"
-                  onClick={() => setSelectedYear(null)}
-                />
+                <div className="expanded-click-outside" onClick={handleClose} />
                 <motion.div
                   ref={expandedRef}
                   layoutId={`card-${selectedYear}`}
                   className="expanded-inline-wrapper"
-                  transition={{ type: "spring", stiffness: 180, damping: 26 }}
+                  transition={{ type: "spring", stiffness: 320, damping: 32 }}
                 >
                   <ExpandedGallery
                     year={selectedYear}
                     images={selectedEntry.images}
-                    onClose={() => setSelectedYear(null)}
+                    onClose={handleClose}
                   />
                 </motion.div>
               </>
             )}
           </AnimatePresence>
-
         </div>
 
-        {/* ── Mobile: carousel + expanded — hidden on desktop via CSS ── */}
-        {!selectedYear && (
-          <MobileGallery onOpenYear={(year) => setSelectedYear(year)} />
+        {!loading && !selectedYear && (
+          <MobileGallery galleryYears={galleryYears} onOpenYear={(year) => setSelectedYear(year)} />
         )}
 
         {selectedYear && selectedEntry && (
@@ -460,11 +363,10 @@ const GallerySection = () => {
             <ExpandedGallery
               year={selectedYear}
               images={selectedEntry.images}
-              onClose={() => setSelectedYear(null)}
+              onClose={handleClose}
             />
           </div>
         )}
-
       </div>
     </section>
   );

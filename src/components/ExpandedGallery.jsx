@@ -2,19 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import "./ExpandedGallery.css";
 import { motion } from "framer-motion";
 
-const getMonthFromPath = (path) => {
-  const parts = path.split("/");
-  const monthMap = {
-    Jan: "January", Feb: "February", Mar: "March", Apr: "April",
-    May: "May", Jun: "June", Jul: "July", Aug: "August",
-    Sep: "September", Oct: "October", Nov: "November", Dec: "December",
-  };
-  for (let part of parts) {
-    if (monthMap[part.slice(0, 3)]) return monthMap[part.slice(0, 3)];
-  }
-  return "";
-};
-
 const StarSVG = ({ className }) => (
   <svg className={className} viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <g transform="translate(50,50)">
@@ -26,7 +13,11 @@ const StarSVG = ({ className }) => (
   </svg>
 );
 
-const ExpandedGallery = ({ images, year, onClose }) => {
+// Fallbacks are removed to process directly from Sanity objects
+const getImageUrl = (img) => (img ? img.url : "");
+const getImageMonth = (img) => (img ? img.month : "");
+
+const ExpandedGallery = ({ images = [], year, onClose }) => {
   const scrollRef = useRef(null);
   const [centerIndex, setCenterIndex] = useState(0);
 
@@ -40,7 +31,6 @@ const ExpandedGallery = ({ images, year, onClose }) => {
     setCenterIndex(index);
   };
 
-  // Detect which image is closest to center after any scroll (touch or wheel)
   const updateCenterIndex = () => {
     const el = scrollRef.current;
     if (!el) return;
@@ -61,7 +51,7 @@ const ExpandedGallery = ({ images, year, onClose }) => {
   // Mouse wheel — step one image at a time
   useEffect(() => {
     const el = scrollRef.current;
-    if (!el) return;
+    if (!el || images.length === 0) return;
     let ticking = false;
     const handleWheel = (e) => {
       e.preventDefault();
@@ -94,8 +84,9 @@ const ExpandedGallery = ({ images, year, onClose }) => {
     return () => el.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Keyboard
+  // Keyboard controls
   useEffect(() => {
+    if (images.length === 0) return;
     const handleKeyDown = (e) => {
       if (e.key === "Escape") { onClose(); return; }
       if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
@@ -110,6 +101,7 @@ const ExpandedGallery = ({ images, year, onClose }) => {
   }, [centerIndex, images.length, onClose]);
 
   const isMobile = window.innerWidth <= 768;
+  const currentMonth = images.length > 0 && centerIndex !== null ? getImageMonth(images[centerIndex]) : "";
 
   return (
     <div className="expanded-gallery-wrapper">
@@ -143,10 +135,10 @@ const ExpandedGallery = ({ images, year, onClose }) => {
           maxHeight: "100%",
         }}
       >
-        {images.map((src, index) => (
+        {images.map((img, index) => (
           <motion.img
             key={index}
-            src={src}
+            src={getImageUrl(img)}
             alt={`Art ${index + 1}`}
             className="scroll-item"
             style={{
@@ -168,9 +160,9 @@ const ExpandedGallery = ({ images, year, onClose }) => {
         ))}
       </div>
 
-      {centerIndex !== null && getMonthFromPath(images[centerIndex]) && (
+      {currentMonth && (
         <div className="bottom-month-label">
-          <span>{getMonthFromPath(images[centerIndex])}</span>
+          <span>{currentMonth}</span>
         </div>
       )}
 

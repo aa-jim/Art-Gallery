@@ -39,8 +39,19 @@ export default function Hero() {
           onClick={() => {
             const section = document.getElementById("gallery");
             if (section) {
-              const offset = section.offsetTop + 80;
-              window.scrollTo({ top: offset, behavior: "smooth" });
+              const start = window.scrollY;
+              const target = section.offsetTop + 80;
+              const distance = target - start;
+              const duration = 800;
+              let startTime = null;
+              const ease = (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+              const step = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                window.scrollTo(0, start + distance * ease(progress));
+                if (progress < 1) requestAnimationFrame(step);
+              };
+              requestAnimationFrame(step);
             }
           }}
           whileHover={{ scale: 1.1, y: -3, backgroundColor: "#ffffff", color: "#000000" }}
