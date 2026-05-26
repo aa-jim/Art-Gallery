@@ -1,15 +1,19 @@
 {
   "files": {
-    "main.css": "/Art-Gallery/static/css/main.83c3639c.css",
-    "main.js": "/Art-Gallery/static/js/main.f76a5245.js",
+    "main.css": "/Art-Gallery/static/css/main.5570f2e4.css",
+    "main.js": "/Art-Gallery/static/js/main.9d71fa7e.js",
+    "static/js/796.1904818b.chunk.js": "/Art-Gallery/static/js/796.1904818b.chunk.js",
+    "static/js/165.63bb9bfb.chunk.js": "/Art-Gallery/static/js/165.63bb9bfb.chunk.js",
     "static/js/453.0edef24e.chunk.js": "/Art-Gallery/static/js/453.0edef24e.chunk.js",
     "index.html": "/Art-Gallery/index.html",
-    "main.83c3639c.css.map": "/Art-Gallery/static/css/main.83c3639c.css.map",
-    "main.f76a5245.js.map": "/Art-Gallery/static/js/main.f76a5245.js.map",
+    "main.5570f2e4.css.map": "/Art-Gallery/static/css/main.5570f2e4.css.map",
+    "main.9d71fa7e.js.map": "/Art-Gallery/static/js/main.9d71fa7e.js.map",
+    "796.1904818b.chunk.js.map": "/Art-Gallery/static/js/796.1904818b.chunk.js.map",
+    "165.63bb9bfb.chunk.js.map": "/Art-Gallery/static/js/165.63bb9bfb.chunk.js.map",
     "453.0edef24e.chunk.js.map": "/Art-Gallery/static/js/453.0edef24e.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.83c3639c.css",
-    "static/js/main.f76a5245.js"
+    "static/css/main.5570f2e4.css",
+    "static/js/main.9d71fa7e.js"
   ]
 }
