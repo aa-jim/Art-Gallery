@@ -43,8 +43,7 @@ const CardInner = ({ image, year }) => (
   </>
 );
 
-const MobileGallery = ({ galleryYears, onOpenYear }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const MobileGallery = ({ galleryYears, onOpenYear, activeIndex, setActiveIndex }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [hasPopped, setHasPopped] = useState(false);
   const dragStartX = useRef(0);
@@ -221,6 +220,7 @@ const GallerySkeleton = () => (
 
 const GallerySection = () => {
   const isMobile = window.innerWidth <= 768;
+  const [mobileActiveIndex, setMobileActiveIndex] = useState(0);
   const titleControls = useAnimation();
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -259,14 +259,26 @@ const GallerySection = () => {
   }, [inView, titleControls]);
 
   useEffect(() => {
-    if (selectedYear && expandedRef.current) {
-      scrollBeforeExpand.current = window.scrollY;
+  if (selectedYear) {
+    scrollBeforeExpand.current = window.scrollY;
+    if (isMobile) {
+      setTimeout(() => {
+        if (mobileExpandedRef.current) {
+          const rect = mobileExpandedRef.current.getBoundingClientRect();
+          const targetTop = window.scrollY + rect.top - 90; // 90 = navbar height + a bit of breathing room
+          window.scrollTo({ top: targetTop, behavior: "smooth" });
+        }
+      }, 50); // small delay so the element has rendered
+      return;
+    }
+    if (expandedRef.current) {
       const el = expandedRef.current;
       const rect = el.getBoundingClientRect();
       const targetTop = window.scrollY + rect.top - (window.innerHeight * 0.15);
       window.scrollTo({ top: targetTop, behavior: "smooth" });
     }
-  }, [selectedYear]);
+  }
+}, [selectedYear, isMobile]);
 
   const scrollBeforeExpand = useRef(0);
 
@@ -355,7 +367,12 @@ const GallerySection = () => {
         </div>
 
         {!loading && !selectedYear && (
-          <MobileGallery galleryYears={galleryYears} onOpenYear={(year) => setSelectedYear(year)} />
+          <MobileGallery 
+            galleryYears={galleryYears} 
+            onOpenYear={(year) => setSelectedYear(year)}
+            activeIndex={mobileActiveIndex}
+            setActiveIndex={setMobileActiveIndex}
+          />
         )}
 
         {selectedYear && selectedEntry && (
